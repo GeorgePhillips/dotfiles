@@ -13,8 +13,8 @@ export FIGNORE=DS_Store
 # Add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
 [ -e "$HOME/.ssh/config" ] && complete -o "default" -o "nospace" -W "$(grep "^Host" ~/.ssh/config | grep -v "[?*]" | cut -d " " -f2 | tr ' ' '\n')" scp sftp ssh
 
-# If possible, add tab completion for many more commands
-[ -f $(brew --prefix)/etc/bash_completion ] && source $(brew --prefix)/etc/bash_completion
+# If possible, add tab completion for many more commands (requires: brew install bash-completion)
+[ -f $(brew --prefix)/etc/bash_completion ] && . $(brew --prefix)/etc/bash_completion
 
 # Always enable colored `grep` output
 export GREP_OPTIONS="--color=auto"
@@ -39,8 +39,6 @@ export HISTCONTROL=ignoredups
 # Make some commands not show up in history
 export HISTIGNORE="ls:cd:cd -:pwd:exit:date:* --help"
 
-# Fixes weird case in .bash_prompt, needs $ brew install gnu-sed
-#alias sed='gsed'
 
 
 # -----
@@ -56,6 +54,7 @@ alias g='git'
 alias a='atom .'
 alias h='history'
 alias j='jekyll serve'
+alias bejs='bundle exec jekyll serve'
 alias reload='source ~/.bash_profile'
 alias psmem='ps aux | sort -nr -k 4'
 alias pscpu='ps aux | sort -nr -k 3'
@@ -69,7 +68,7 @@ alias nginxreload='/usr/local/bin/nginx -s reload'
 alias gut='git'
 alias gti='git'
 alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup; npm update npm -g; npm update -g;'
-alias checkps='ps aux | grep  -v grep | grep'
+alias checkps='ps aux | grep -v grep | grep'
 alias show-hidden-files='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
 alias hide-hidden-files='defaults delete com.apple.finder AppleShowAllFiles; killall Finder /System/Library/CoreServices/Finder.app'
 
@@ -88,6 +87,10 @@ export PATH="$PATH:/usr/local/sbin"
 # ------
 # Extras
 
-source ~/.bash_profile.local
-source ~/.bash_prompt
+# Set the title of the terminal window or iTerm split pane (usage: $ title my project name)
+function title {
+	echo -ne "\033]0;"$*"\007"
+}
 
+[ -f ~/.bash_profile.local ] && source ~/.bash_profile.local
+[ -f ~/.bash_prompt ] && source ~/.bash_prompt

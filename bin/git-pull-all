@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# git-check by Ross Phillips
-#  - Shows git changes in all subfolders
-#  - Won't work if you have spaces in your directory names
+# git-fetch by Ross Phillips
+#  - Runs a git fetch in all git repo subfolders
+#  - Won't work if you have spaces in your directory names but why would ya
 
 # TODO - extract to colors.sh
 
@@ -84,6 +84,8 @@ do
 
 	dir=`echo $repo | sed -e 's/\/.git/\//' | sed s'/.$//' | sed s'/^\.\///'`
 	cd $dir
+
+	git pull
 
 	if git_ahead || git_dirty
 	then
